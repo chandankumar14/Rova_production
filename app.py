@@ -18,10 +18,16 @@ async def TomatoModel(
     file: UploadFile = File(...)
 ):
     image = common.read_file_as_image(await file.read())
-    payload = tomato.TomatoModel(image)
-    return payload
+    # object classification of object before pre
+    preObj= common.classification(image)
+    if preObj["status"]==True and len(preObj["ObjectList"])>0:
+        return preObj
+    else:
+        payload = tomato.TomatoModel(image)
+        return payload
 
 @app.get("/", tags=["Root"])
+
 async def read_root():
     return {"message": "Welcome to the API!"}
 

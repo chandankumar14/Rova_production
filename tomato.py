@@ -1,26 +1,18 @@
 import numpy as np
 import tensorflow as tf
 MODEL = tf.keras.models.load_model("./Trained_Model/Tomato")
-CLASS_NAMES = [
-'Tomato_Bacterial_spot',
- 'Tomato_Early_blight_',
- 'Tomato_Late_blight',
- 'Tomato_Leaf_Mold',
- 'Tomato_Septoria_leaf_spot',
- 'Tomato_Spider_mites',
- 'Tomato_Target_Spot',
- 'Tomato_Yellow_Leaf_Curl_Virus',
- 'Tomato__Tomato_mosaic_virus',
- 'Tomato_healthy'
- ]
+CLASS_NAMES = ['Bacterial-spot', 'Early-blight', 'Healthy', 'Late-blight',
+               'Leaf-mold', 'Mosaic-virus', 'Septoria-leaf-spot', 'Yellow-leaf-curl-virus']
 
 def TomatoModel(image):
     img_batch = np.expand_dims(image, 0)
-    predictions =  MODEL.predict(img_batch)
+    image_resized = tf.image.resize(img_batch, (256, 256))
+    predictions =  MODEL.predict(image_resized)
     predicted_class = CLASS_NAMES[np.argmax(predictions[0])]
     confidence = round(100 * (np.max(predictions[0])), 2)
     return {
         'class': predicted_class,
-        'accuracy': confidence 
+        'accuracy': confidence,
+        'StatusCode':200 
     }
 

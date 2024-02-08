@@ -32,7 +32,7 @@ def classification(image):
     model.setInputScale(1.0/127.5) 
     model.setInputMean((127.5, 127.5, 127.5))
     model.setInputSwapRB(True)
-    ClassIndex, confidence, bbox = model.detect(image, confThreshold=0.6)
+    ClassIndex, confidence, bbox = model.detect(image, confThreshold=0.7)
     if len(ClassIndex)>0:
         status =True
         for index in ClassIndex:
